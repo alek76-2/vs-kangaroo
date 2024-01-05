@@ -75,6 +75,11 @@ int _ConvertSMVer2Cores(int major, int minor) {
       {0x70,  64},
       {0x72,  64},
       {0x75,  64},
+      //{0x80,  64},
+      //{0x86, 128},
+      //{0x87, 128},
+      //{0x89, 128},
+      //{0x90, 128},
       {-1, -1} };
 
   int index = 0;
@@ -193,12 +198,12 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
   }
   
   
-  //size_t stackSize = 49152;
-  //err = cudaDeviceSetLimit(cudaLimitStackSize, stackSize);
-  //if (err != cudaSuccess) {
-  //  printf("\nGPUEngine: %s\n", cudaGetErrorString(err));
-  //  return;
-  //}
+  size_t stackSize = 49152;
+  err = cudaDeviceSetLimit(cudaLimitStackSize, stackSize);
+  if (err != cudaSuccess) {
+    printf("\nGPUEngine: %s\n", cudaGetErrorString(err));
+    return;
+  }
   
   
   size_t size;
