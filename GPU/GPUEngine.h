@@ -35,7 +35,7 @@
 #ifdef USE_ORIGINAL_JUMP
 	#define NB_JUMP 128
 #else
-	#define NB_JUMP 16//32
+	#define NB_JUMP 64//16//32
 #endif
 
 #define ITEM_SIZE 72
