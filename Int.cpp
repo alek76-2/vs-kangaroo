@@ -770,7 +770,8 @@ void Int::RandFix(int nbit) {// Original Rand() For fixed Random used rseed() !!
 	uint32_t i=0;
 	for(;i<nb;i++)
 		bits[i] = rndl_fixed();//bits[i]=rndl();
-	bits[i]=rndl()&mask;
+	//bits[i]=rndl()&mask; found ERROR !!!
+	bits[i] = rndl_fixed() & mask;
 
 }
 
