@@ -586,6 +586,101 @@ void VanitySearch::FindKeyCPU(TH_PARAM *ph) {
 
 }
 
+/*
+// Default starting keys
+// ----------------------------------------------------------------------------
+void VanitySearch::getGPUStartingKeys(int thId, int groupSize, int nbThread, Point itargetPubKey, Int *keys, Point *p) {
+
+	// Variables
+	volatile int trbit = pow2W;// Tame Random Bit
+	volatile int wrbit = pow2W;// Wild Random Bit
+	// Starting Keys
+	//Int TameStartingKey(&bnU);
+	Int TameStartingKey(&bnM);
+	//Int TameStartingKey(&bnL);
+	//
+	printf("\nGPU thId: %d ", thId);
+	//volatile int bitlen = bnL.GetBitLength();
+	//printf("GPU bnL: 2^%d \nGPU TameStartingKey: %s", bitlen, TameStartingKey.GetBase16().c_str());
+	printf("GPU TameStartingKey: %s", TameStartingKey.GetBase16().c_str());
+	// Make keys
+	volatile int i;
+	volatile int g;
+	volatile int index = 0;
+	//
+	for (i = 0; i < nbThread; i++) {
+	for (g = 0; g < (int)GPU_GRP_SIZE; g++) {
+	// index
+	index = i * (int)GPU_GRP_SIZE + g;
+	// Get keys	
+	if (rekey > 1) {
+		// Get keys
+		keys[index].SetInt32(0);// CLR !!!
+		tkey.Rand(trbit);
+		wkey.Rand(wrbit);
+		//
+		if (g % 2 == TAME) {
+			keys[index].Add(&TameStartingKey);// Tame keys
+			keys[index].Add(&tkey);
+			// Check GPU Random Key
+			if (g < 10 && i == 0) printf("\nGPU Tame Starting Key %d: %s ", g, keys[index].GetBase16().c_str());
+			if (g == (int)GPU_GRP_SIZE-1 && i == nbThread-1) printf("\nGPU Tame Starting Key %d: %s Kangaroos: %d ", (i*g)+g, keys[index].GetBase16().c_str(), nbThread * (int)GPU_GRP_SIZE);
+		} else {
+			keys[index].Add(&wkey);// Wild keys
+			// Check GPU Random Key
+			if (g < 10 && i == 0) printf("\nGPU Wild Starting Key %d: %s ", g, keys[index].GetBase16().c_str());
+			if (g == (int)GPU_GRP_SIZE-1 && i == nbThread-1) printf("\nGPU Wild Starting Key %d: %s Kangaroos: %d ", (i*g)+g, keys[index].GetBase16().c_str(), nbThread * (int)GPU_GRP_SIZE);
+		}
+	} else {
+		// Get keys
+		keys[index].SetInt32(0);// CLR !!!
+		tkey.Rand(trbit);
+		wkey.Rand(wrbit);
+		//
+		if (g % 2 == TAME) {
+			keys[index].Add(&TameStartingKey);// Tame keys
+			keys[index].Add(&tkey);
+			// Check GPU Random Key
+			if (g < 10 && i == 0) printf("\nGPU Tame Starting Key %d: %s ", g, keys[index].GetBase16().c_str());
+			if (g == (int)GPU_GRP_SIZE-1 && i == nbThread-1) printf("\nGPU Tame Starting Key %d: %s Kangaroos: %d ", (i*g)+g, keys[index].GetBase16().c_str(), nbThread * (int)GPU_GRP_SIZE);
+			
+		} else {
+			keys[index].Add(&wkey);// Wild keys
+			// Check GPU Random Key
+			if (g < 10 && i == 0) printf("\nGPU Wild Starting Key %d: %s ", g, keys[index].GetBase16().c_str());
+			if (g == (int)GPU_GRP_SIZE-1 && i == nbThread-1) printf("\nGPU Wild Starting Key %d: %s Kangaroos: %d ", (i*g)+g, keys[index].GetBase16().c_str(), nbThread * (int)GPU_GRP_SIZE);
+		}	  
+	}// end if rekey
+	
+	// For check GPU code
+	//keys[index].SetBase16("FF");
+	//keys[index].SetInt32(10);
+	//
+	
+	Int k;	
+	k.SetInt32(0);// clr	
+	k.Set(&keys[index]);
+	// Point
+    p[index] = secp->ComputePublicKey(&k);
+	
+	//if (0) {// Set 0 for check compute points in GPU
+	if (g % 2 == WILD) {
+	
+		Point p1 = p[index];
+		// WILD Add Points
+		//p[index] = secp->AddAffine(itargetPubKey, p[index]);
+		p[index] = secp->AddAffine(itargetPubKey, p1);
+				
+	}// end if WILD
+	}// end for GPU_GRP_SIZE
+	}// end for nbThread
+	
+	printf("\nNB Thread: %d , GPU_GRP_SIZE: %d ", nbThread, (int)GPU_GRP_SIZE);
+	
+	// end of function
+}
+*/
+
 // ----------------------------------------------------------------------------
 
 #define NB_DIVIDE_MAX 2048 // 2^11
