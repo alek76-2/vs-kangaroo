@@ -1586,11 +1586,12 @@ void VanitySearch::FindKeyGPU(TH_PARAM *ph) {
   #endif  
   
   // Select comparator type
-  flag_comparator = true;
+  //flag_comparator = true;
   if (flag_comparator) {
 	printf("[i] Used Comparator in Python\n");
   } else {
-	printf("[i] Used Comparator in C++\n");
+	//printf("[i] Used Comparator in C++\n");
+	printf("[i] -nocmp OFF Comparator in Python\n");	  
   }
   
   
@@ -1928,13 +1929,20 @@ void VanitySearch::SolverGPU(TH_PARAM *ph) {
 	
 	int slp = pow2Wsqrt * 1000;
 	//slp *= 5;
-	slp = 1000 * 30;
+	//slp = 1000 * 30;
 	//slp = 1000 * 15;
 	//slp = 1000 * 60;
 	//slp = 1000 * 60 * 5;
-	//slp = 1000 * 60 * 10;// 10 min 
+	slp = 1000 * 60 * 1;// 1 min 
 	
-	printf("\n[+] Runing Comparator every: %d sec\n", slp / 1000);
+	//printf("\n[+] Runing Comparator every: %d sec\n", slp / 1000);
+
+	if (flag_comparator) {
+		printf("\n[+] Runing Comparator every: %d sec\n", slp / 1000);
+	} else {
+		printf("\n[+] OFF Comparator\n");
+		return;
+	}
 	
 	if (useWorkFile || createWorkFile) printf("[i] Save Work_Kangaroos_id.txt file every: %lu sec\n", (unsigned long)save_work_timer_interval);// add if !!!
 	
