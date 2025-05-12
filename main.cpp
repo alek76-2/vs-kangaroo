@@ -26,8 +26,9 @@
 
 //
 #include <iostream>
+#include <locale.h>
 
-#define RELEASE "0.18"
+#define RELEASE "0.19"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ void printUsage() {
   printf("             [-work]\n");
   printf("             [-drive]\n");
   printf("             [-p Power]\n");
-  //printf("             [-cmp Comparator]\n");
+  printf("             [-nocmp Comparator]\n");
   printf("             [-gpuId gpuId1[,gpuId2,...]]\n");
   printf("             [-g gridSize1[,gridSize2,...]]\n");
   printf("             [-l]\n");
@@ -68,6 +69,7 @@ void printUsage() {
   printf(" -drive ->Enable Copy work files kangaroo to Drive, tested and default is disabled \n");
   printf(" -p 4 ->Num of GPU Kangaroo Power. Increases Jump Size, must be 0-16 (default 0)\n");
   //printf(" -cmp ->Enable Comparator C++ (default Python, run solver.py)\n");
+  printf(" -nocmp ->Disable Comparator (default Python, run solver.py) Disable Comparator: -nocmp \n");
   printf(" -gpuId 0,1,2,.. ->List of GPUs to use, default is 0\n");
   printf(" -g g1x,g1y,g2x,g2y,...: Specify GPU(s) kernel gridsize, default is 2*(MP),2*(Core/MP)\n");
   printf(" -dp dp: Set fixed DP module the GPU thread, must be 14-24 (default is auto)\n");
@@ -339,8 +341,14 @@ void checkKeySpace(structW *stR, Int& maxKey) {
 
 int main(int argc, char* argv[]) {
 
+  // setlocale
+  setlocale(LC_ALL, "en_US.UTF-8");// OR setlocale(LC_ALL, "en_US.UTF8");
+  std::string current_locale = setlocale(LC_ALL, NULL);
+  printf("Current locale: %s\n", current_locale.c_str());
+  //
+  
   setbuf(stdout, NULL); // cancel channel buffering (for printf)
-
+  
   // Global Init
   Timer::Init();
   rseed((unsigned long)time(NULL));
@@ -498,11 +506,11 @@ int main(int argc, char* argv[]) {
       a++;
       GPUPower = getInt("GPUPower",argv[a]);
       a++;      
-	}/*
-	else if (strcmp(argv[a], "-cmp") == 0) {
+	}
+	else if (strcmp(argv[a], "-nocmp") == 0) {
       flag_cmp = false;
       a++;	  
-	}*/
+	}
 	else if (strcmp(argv[a], "-bits") == 0) {
 	//} else if (strcmp(argv[a], "--keyspace") == 0) {
 	  a++;
