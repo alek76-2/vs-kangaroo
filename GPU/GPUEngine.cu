@@ -198,12 +198,12 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
   }
   
   
-  size_t stackSize = 49152;
-  err = cudaDeviceSetLimit(cudaLimitStackSize, stackSize);
-  if (err != cudaSuccess) {
-    printf("\nGPUEngine: %s\n", cudaGetErrorString(err));
-    return;
-  }
+  //size_t stackSize = 49152;
+  //err = cudaDeviceSetLimit(cudaLimitStackSize, stackSize);
+  //if (err != cudaSuccess) {
+  //  printf("\nGPUEngine: %s\n", cudaGetErrorString(err));
+  //  return;
+  //}
   
   
   size_t size;
