@@ -33,6 +33,9 @@ def comparator(tame, wild):
         file.write(hex(Ak[sol_kt] - Bk[sol_kw]) + "\n")
         file.write("----------------------------------------\n")
         file.write("Tips: 1NULY7DhzuNvSDtPkFzNo6oRTZQWBqXNE9\n")
+        file.write("----------------------------------------\n")
+        file.write(hex(Ak[sol_kt]) + "\n" + hex(Bk[sol_kw]) + "\n")
+        file.write("\n----------------------------------------\n")
         file.close()
         sys.exit(0)
     else:
