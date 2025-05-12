@@ -26,7 +26,7 @@
 #define NB_SPIN 256//16
 #define GPU_OUTPUT_CHECK 1//0//1// 1 Enable 0 Disable Verification can be disabled
 
-#define NB_WORK 5// Set 1 - 5 Number work files
+#define NB_WORK 16//5// Set 1 - 5 Number work files
 
 #define HT_SIZE 1024// 128
 
@@ -35,7 +35,7 @@
 #ifdef USE_ORIGINAL_JUMP
 	#define NB_JUMP 128
 #else
-	#define NB_JUMP 64//16//32
+	#define NB_JUMP 64// !!! // 32//16//32
 #endif
 
 #define ITEM_SIZE 72
