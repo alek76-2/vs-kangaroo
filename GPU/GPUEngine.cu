@@ -151,7 +151,7 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
   // Get mask hop_modulo
   hop_modulo = hop_modulo - 1;
   
-  this->DPmodule = DPmodule;
+  this->DPmodule = DPmodule - 1;//this->DPmodule = DPmodule;
   this->hop_modulo = hop_modulo;
   
   int deviceCount = 0;
