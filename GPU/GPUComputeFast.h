@@ -117,7 +117,8 @@ __device__ void ComputeKeys(uint64_t *Tkangaroos, uint64_t DPmod, uint32_t hop_m
 			Load256(py[g], ry);
 			
 			
-			if (px[g][0] % DPmod == 0) {// I use % mod !!
+			//if (px[g][0] % DPmod == 0) {// I use % mod !!
+			if ((px[g][0] & DPmod) == 0) {// edit GPUEngine.cu this->DPmodule = DPmodule - 1; 
 				uint32_t pos = atomicAdd(out,1);
 				if(pos < maxFound) {
 					uint64_t kIdx = (uint64_t)IDX + (uint64_t)g*(uint64_t)blockDim.x + (uint64_t)blockIdx.x*((uint64_t)blockDim.x*GPU_GRP_SIZE);
