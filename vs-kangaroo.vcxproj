@@ -20,6 +20,7 @@
     <ClInclude Include="default_pubkeys.h" />
     <ClInclude Include="GPU\GPUBase58.h" />
     <ClInclude Include="GPU\GPUCompute.h" />
+    <ClInclude Include="GPU\GPUComputeFast.h" />
     <ClInclude Include="GPU\GPUEngine.h" />
     <ClInclude Include="GPU\GPUGroup.h" />
     <ClInclude Include="GPU\GPUHash.h" />
