@@ -30,7 +30,7 @@
 
 #define HT_SIZE 1024// 128
 
-//#define USE_ORIGINAL_JUMP
+#define USE_ORIGINAL_JUMP
 
 #ifdef USE_ORIGINAL_JUMP
 	#define NB_JUMP 128
