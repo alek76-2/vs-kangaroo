@@ -223,8 +223,8 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 	ifstream inFile(file_name);
 	
 	if (inFile.is_open()) { 
-		Timer::SleepMillis(1000);// add pause 1 sec !!!
-		//
+		Timer::SleepMillis(100);// add pause 100 ms !!!
+		printf("[i] File open\n");//
 		for (i = 0; i < nbThread; i++) {
 			for (g = 0; g < (int)GPU_GRP_SIZE; g++) {
 				// Get index
@@ -233,8 +233,8 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 				// get line
 				sline = "";
 				//getline(inFile, sline, '\n');
-				std::getline(inFile, sline);
-				
+				if (getline(inFile, sline)) { printf("getline() line: %d nbThread: %d g: %d \r", ind, i, g); 
+				} else { printf("!!! NO getline() line: %d nbThread: %d g: %d \n", ind, i, g); } 
 				// Remove ending \r\n
 				int l = (int)sline.length() - 1;
 				while (l >= 0 && isspace(sline.at(l))) {
