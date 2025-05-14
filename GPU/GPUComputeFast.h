@@ -73,9 +73,9 @@ __device__ void ComputeKeys(uint64_t *Tkangaroos, uint64_t DPmod, uint32_t hop_m
 		// Get dx
 		for(uint32_t g = 0; g < GPU_GRP_SIZE; g++) {
 			#ifdef USE_ORIGINAL_JUMP
-			uint32_t pw1 = (uint32_t)(px[g][0]) & hop_modulo;// Get mask hop_modulo -= 1 in GPUEngine.cu
+			pw1 = (uint32_t)(px[g][0]) & hop_modulo;// Get mask hop_modulo -= 1 in GPUEngine.cu
 			#else
-			uint32_t pw1 = (uint32_t)(px[g][0]) & (NB_JUMP - 1);
+			pw1 = (uint32_t)(px[g][0]) & (NB_JUMP - 1);
 			#endif
 			ModSub256(dx[g], px[g], Spx[pw1]);
 		}
