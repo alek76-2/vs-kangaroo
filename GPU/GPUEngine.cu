@@ -134,18 +134,18 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
 	pow2dp = 32;//24;
 	printf("GPUEngine: New DPmodule = 2^%d \n", pow2dp);
   }
-  if (pow2dp < 12) {//if (pow2dp < 14) {
+  if (pow2dp < 12) {//if (pow2dp < 16) {
 	printf("GPUEngine: Old DPmodule = 2^%d \n", pow2dp);
-	pow2dp = 12;//pow2dp = 14;
+	pow2dp = 12;//pow2dp = 16;
 	printf("GPUEngine: New DPmodule = 2^%d \n", pow2dp);
   }
   
   uint64_t DPmodule = (uint64_t)1 << pow2dp;
   
   if (fixedDP > 0) {
-	printf("GPUEngine: Fixed DPmodule: 0x%lx 2^%d Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);	
+	printf("GPUEngine: Fixed DPmodule: 0x%llx 2^%d Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);	
   } else {
-	printf("GPUEngine: DPmodule: 0x%lx 2^%d (pow2W/2)-log(Kangaroos)-2 Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);
+	printf("GPUEngine: DPmodule: 0x%llx 2^%d (pow2W/2)-log(Kangaroos)-2 Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);
   }
   
   // Get mask hop_modulo
@@ -208,10 +208,10 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
   
   size_t size;
   cudaDeviceGetLimit(&size, cudaLimitStackSize);
-  printf("GPUEngine: Stack Size: %ld\n", size);
+  printf("GPUEngine: Stack Size: %zd\n", size);
   cudaDeviceGetLimit(&size, cudaLimitMallocHeapSize);
-  printf("GPUEngine:  Heap Size: %ld\n", size);
-  
+  printf("GPUEngine:  Heap Size: %zd\n", size);
+  printf("GPUEngine:  Max Found: %lu Output Size: %lu\n", maxFound, outputSize);
   
   // Allocate memory
   inputKangaroo = NULL;
