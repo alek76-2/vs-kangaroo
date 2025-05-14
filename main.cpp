@@ -50,6 +50,7 @@ void printUsage() {
   printf("             [-g gridSize1[,gridSize2,...]]\n");
   printf("             [-l]\n");
   printf("             [-rekey]\n");
+  printf("             [-m maxFound]\n");
   
   printf("             [-dp]\n");
   printf("             [-div]\n");
@@ -76,6 +77,7 @@ void printUsage() {
   printf(" -div div: Set Divide Bit (2^div) the GPU thread, must be 2-11 (default 0 - NO Divide PubKey)\n");
   printf(" -l ->List cuda enabled devices\n");
   printf(" -r rekey: Rekey interval in MegaJ, default is disabled \n");
+  printf(" -m maxFound: Set maxFound items for GPU Memory outputSize, must be 65536, 131072, 262144. (default: 65536)\n");
 
   printf(" -o path2file ->Output found privkey to file\n");
   printf(" -v 1 ->Verbose level info\n");
@@ -397,7 +399,7 @@ int main(int argc, char* argv[]) {
   int nbCPUThread = Timer::getCoreNumber();
   bool tSpecified = false;
   
-  uint32_t maxFound = 131072;
+  uint32_t maxFound = 65536;//uint32_t maxFound = 131072;
   //uint32_t maxFound = 262144;
   uint64_t rekey = 0;
   int GPUPower = 0;
@@ -584,6 +586,11 @@ int main(int argc, char* argv[]) {
       rekey = (uint64_t)getInt("rekey", argv[a]);
       a++;
     } 
+	else if (strcmp(argv[a], "-m") == 0) {
+      a++;
+      maxFound = getInt("maxFound",argv[a]);
+      a++;      
+	}
 	else if (a == argc - 1) {
 	  //string target = "0309976ba5570966bf889196b7fdf5a0f9a1e9ab340556ec29f8bb60599616167d";// bits 110
 	  //targetPubKey = secp->ParsePublicKeyHex(target, flag_compressed);
