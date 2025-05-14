@@ -134,9 +134,9 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
 	pow2dp = 32;//24;
 	printf("GPUEngine: New DPmodule = 2^%d \n", pow2dp);
   }
-  if (pow2dp < 16) {//if (pow2dp < 14) {
+  if (pow2dp < 12) {//if (pow2dp < 14) {
 	printf("GPUEngine: Old DPmodule = 2^%d \n", pow2dp);
-	pow2dp = 16;//pow2dp = 14;
+	pow2dp = 12;//pow2dp = 14;
 	printf("GPUEngine: New DPmodule = 2^%d \n", pow2dp);
   }
   
