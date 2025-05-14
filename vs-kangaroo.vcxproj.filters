@@ -46,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="default_pubkeys.h" />
     <ClInclude Include="Backup.h" />
+    <ClInclude Include="GPU\GPUComputeFast.h">
+      <Filter>GPU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="hash\ripemd160.cpp">
