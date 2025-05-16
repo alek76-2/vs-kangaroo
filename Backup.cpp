@@ -1,7 +1,7 @@
 /*
  * This free code from alek76
  * Backup Kangaroos 
- * Updated 12.05.2025 
+ * Updated 16.05.2025 
  * File main.cpp main() setlocale
  * // setlocale
  * setlocale(LC_ALL, "en_US.UTF-8");// OR setlocale(LC_ALL, "en_US.UTF8");
@@ -33,7 +33,7 @@ using namespace std;
 // ========================================================================================================
 // Save work Kangaroos to file
 // code from alek76
-// Updated 12.05.2025 
+// Updated 16.05.2025 
 // ========================================================================================================
 bool SaveWorkKangaroosToFile(int thId, int nbThread, Point *kangPoints, Int *kangDistance) { 
 	// names
@@ -176,7 +176,7 @@ bool SaveWorkKangaroosToFile(int thId, int nbThread, Point *kangPoints, Int *kan
 // Load work Kangaroos from files 
 // code from alek76 date 16.10.2023 
 // code tested OK 
-// Updated 12.05.2025 
+// Updated 16.05.2025 
 // ========================================================================================================
 bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *kangDistance) { 
 	
@@ -211,7 +211,6 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 	printf("[i] File %s: %llu bytes %lu lines \n", file_name.c_str(), (unsigned long long)sz, (unsigned long)nbl);
 	
 	// Parse File 
-	//string sline = "";
 	std::string sline = "";
 	volatile int i = 0;
 	volatile int g = 0;
@@ -233,7 +232,7 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 				// get line
 				sline = "";
 				//getline(inFile, sline, '\n');
-				if (getline(inFile, sline)) { printf("getline() line: %d nbThread: %d g: %d \r", ind, i, g); 
+				if (getline(inFile, sline)) { //printf("getline() line: %d nbThread: %d g: %d \r", ind, i, g); 
 				} else { printf("!!! NO getline() line: %d nbThread: %d g: %d \n", ind, i, g); } 
 				// Remove ending \r\n
 				int l = (int)sline.length() - 1;
@@ -250,10 +249,6 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 					// check
 					//if (i < 10 && g < 10) printf("g: %d sizeof line: %d line: %s\n", g, (int)sizeof(sline), sline.c_str()); 
 					//
-					// const char* to char*
-					//char *px =  new char [64];// no +1 for the \0 
-					//char *py =  new char [64];
-					//char *key = new char [64];
 					// copy
 					std::memcpy(px, str_px.c_str(), 64);//memcpy(px, str_px.c_str(), 64);
 					std::memcpy(py, str_py.c_str(), 64);//memcpy(py, str_py.c_str(), 64);
@@ -285,10 +280,6 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 					Int tmp2;
 					uint32_t val_2 = 0xFFFF;
 					tmp2.SetInt32(val_2);
-					// clr 
-					//free(px);
-					//free(py);
-					//free(key);
 					// erase data
 					std::memset(px, 0, 64);
 					std::memset(py, 0, 64);
@@ -317,16 +308,16 @@ bool LoadWorkKangaroosFromFile(int thId, int nbThread, Point *kangPoints, Int *k
 	// close file
 	inFile.close();	
 	
-	// clr 
-	free(px);
-	free(py);
-	free(key);
+	// Deallocate Heap memory
+	delete[] px;
+	delete[] py;
+	delete[] key;
 	
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double, std::milli> elapsed_ms = end - begin;
 	
 	if (kang_cnt == nbKang) { //if (flag_verbose > 0) { 
-		printf("\n[i] Get Keys time: %.3f msec From file: %s Size: %lu bytes \n", elapsed_ms, file_name.c_str(), (unsigned long)sz); 
+		printf("\n[i] Get Keys time: %.3f msec From file: %s Size: %lu bytes \n", elapsed_ms.count(), file_name.c_str(), (unsigned long)sz); 
 		return true;
 	}
 	return false;
