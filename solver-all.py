@@ -35,7 +35,7 @@ def comparator(tame, wild):
         file.write("Tips: 1NULY7DhzuNvSDtPkFzNo6oRTZQWBqXNE9\n")
         file.write("----------------------------------------\n")
         file.write(hex(Ak[sol_kt]) + "\n" + hex(Bk[sol_kw]) + "\n")
-        file.write("\n----------------------------------------\n")
+        file.write("----------------------------------------\n")
         file.close()
         sys.exit(0)
     else:
