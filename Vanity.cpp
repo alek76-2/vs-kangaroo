@@ -773,7 +773,7 @@ void VanitySearch::getGPUStartingKeys(int thId, int groupSize, int nbThread, Poi
 	//int divkey = 2;
 	volatile int cnt = 0;
 	volatile int k = 0;
-	rseed(0x600DCAFE);// Fix RandFix()
+	//rseed(0x600DCAFE);// Fix RandFix()
 		
 	if (DivideKey_flag) {// if used Divide 
 	for (k = 0; k < NB_DIVIDE_MAX; k++) {
@@ -1254,7 +1254,7 @@ bool VanitySearch::File2save(Int px,  Int key, uint32_t stype, int nb_file) {
 }
 
 // ----------------------------------------------------------------------------
-
+/*
 bool VanitySearch::File2saveHT(Int *HTpx, Int *HTkey, uint32_t *HTtype, int nb_file) {
 	
 	std::string n_file = std::to_string(nb_file);
@@ -1320,6 +1320,113 @@ bool VanitySearch::File2saveHT(Int *HTpx, Int *HTkey, uint32_t *HTtype, int nb_f
 	}
 	
 	fclose(f1);
+	fclose(f2);
+	
+	return true;
+}
+*/
+
+bool VanitySearch::File2saveHT(Int *HTpx, Int *HTkey, uint32_t *HTtype, int nb_file) {
+	
+	std::string n_file = std::to_string(nb_file);
+	std::string fTame = "tame-" + n_file + ".txt";
+	std::string fWild = "wild-" + n_file + ".txt";
+	std::string p0 = "0";
+	std::string k0 = "0";
+	
+	// Separate of index HT
+	volatile int q = 0;
+
+	// tame file
+	FILE *f1 = fopen(fTame.c_str(), "a");
+	if (f1 == NULL) {
+		printf("\n[error] Cannot open file %s for writing! %s \n", fTame.c_str(), strerror(errno));
+		f1 = stdout;
+		return false;
+	}
+	
+	for (q = 0; q < HT_SIZE; q++) {
+		std::string str_px = HTpx[q].GetBase16().c_str();
+		std::string str_key = HTkey[q].GetBase16().c_str();
+		uint32_t stype = HTtype[q];
+		// check printf
+		//printf("\n  tpx: %s stype: %lu ", str_px.c_str(), (unsigned long)stype);
+		//printf("\n tkey: %s stype: %lu \n", str_key.c_str(), (unsigned long)stype);
+		
+		std::string getpx = "";
+		std::string getkey = "";
+		
+		for (int i = (int)str_px.size(); i < 64; i++) {
+			getpx.append(p0);
+		}
+		getpx.append(str_px);
+		
+		for (int i = (int)str_key.size(); i < 64; i++) {
+			getkey.append(k0);
+		}
+		getkey.append(str_key);
+		
+		std::string str_write = getpx + " " + getkey;
+		
+		int lenstr = (int)str_write.length();
+		
+		// check printf
+		//printf("\n lenstr: %d stype: %lu \n", lenstr, (unsigned long)stype);
+		//printf("\n str_write: %s \n", str_write.c_str());
+		//printf("\n str_px.size(): %d \n", (int)str_px.size());
+		
+		// Write in file tame
+		if (stype == 1 && lenstr == 129) {
+			fprintf(f1, "%s\n", str_write.c_str());
+		}
+	}
+	
+	fclose(f1);
+	
+	// wild file
+	FILE *f2 = fopen(fWild.c_str(), "a");
+	if (f2 == NULL) {
+		printf("\n[error] Cannot open file %s for writing! %s \n", fWild.c_str(), strerror(errno));
+		f2 = stdout;
+		return false;
+	}	
+	
+	for (q = 0; q < HT_SIZE; q++) {
+		std::string str_px = HTpx[q].GetBase16().c_str();
+		std::string str_key = HTkey[q].GetBase16().c_str();
+		uint32_t stype = HTtype[q];
+		// check printf
+		//printf("\n  tpx: %s stype: %lu ", str_px.c_str(), (unsigned long)stype);
+		//printf("\n tkey: %s stype: %lu \n", str_key.c_str(), (unsigned long)stype);
+		
+		std::string getpx = "";
+		std::string getkey = "";
+		
+		for (int i = (int)str_px.size(); i < 64; i++) {
+			getpx.append(p0);
+		}
+		getpx.append(str_px);
+		
+		for (int i = (int)str_key.size(); i < 64; i++) {
+			getkey.append(k0);
+		}
+		getkey.append(str_key);
+		
+		std::string str_write = getpx + " " + getkey;
+		
+		int lenstr = (int)str_write.length();
+		
+		// check printf
+		//printf("\n lenstr: %d stype: %lu \n", lenstr, (unsigned long)stype);
+		//printf("\n str_write: %s \n", str_write.c_str());
+		//printf("\n str_px.size(): %d \n", (int)str_px.size());
+		
+		// Write in file wild
+		if (stype == 0 && lenstr == 129) {
+			fprintf(f2, "%s\n", str_write.c_str());
+		}
+	}
+	
 	fclose(f2);
 	
 	return true;
@@ -2294,7 +2401,7 @@ void VanitySearch::Search(bool useGpu, std::vector<int> gpuId, std::vector<int> 
   }
   DPmodule = (uint64_t)1<<pow2dp;
   if (flag_verbose > 0)
-	  printf("[DPmodule] 2^%d = %llu (0x%016llX) \n", pow2dp, DPmodule, DPmodule);
+	  printf("[DPmodule] 2^%d = %llu (0x%llX) \n", pow2dp, (unsigned long long)DPmodule, (unsigned long long)DPmodule);
 
 
   /////////////////////////////////////////////////
@@ -2423,8 +2530,9 @@ void VanitySearch::Search(bool useGpu, std::vector<int> gpuId, std::vector<int> 
 	else {
 		params[nbCPUThread+i].gridSizeX = x;
 		params[nbCPUThread+i].gridSizeY = y;
+		printf("[GPU] gridSizeX: %d gridSizeY: % d \n", x, y);// check
 	}
-    totalRW += GPU_GRP_SIZE * x*y;
+	totalRW += GPU_GRP_SIZE * x*y;
 #ifdef WIN64
     DWORD thread_id;
     CreateThread(NULL, 0, _FindKeyGPU, (void*)(params+(nbCPUThread+i)), 0, &thread_id);
@@ -2656,8 +2764,8 @@ void VanitySearch::Search(bool useGpu, std::vector<int> gpuId, std::vector<int> 
   bnTmp.ShiftR(pow2Wsqrt - 2); double percprog = (double)bnTmp.GetInt32(); percprog /= 2 * 2 * 2;
   printf(" %5.1f%%;", (double)percprog); // percent progress, expected 2w^(1/2) jumps
 
-  printf(" DP %dT+%dW=%llu+%llu=%llu; dp/kgr=%.1lf;" //printf(" DP %dT+%dW=%lu+%lu=%lu; dp/kgr=%.1lf;"
-	  , xU, xV, (uint64_t)countDT, (uint64_t)countDW, (uint64_t)(countDT+countDW), (double)(countDT+countDW)/2
+  printf(" DP %dT+%dW=%lu+%lu=%lu; dp/kgr=%.1lf;"
+	  , xU, xV, (unsigned long)countDT, (unsigned long)countDW, (unsigned long)(countDT+countDW), (double)(countDT+countDW)/2
   ); // distinguished points
 
   printf("\n");
