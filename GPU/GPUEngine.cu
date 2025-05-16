@@ -143,15 +143,16 @@ GPUEngine::GPUEngine(int nbThreadGroup, int nbThreadPerGroup, int gpuId, uint32_
   uint64_t DPmodule = (uint64_t)1 << pow2dp;
   
   if (fixedDP > 0) {
-	printf("GPUEngine: Fixed DPmodule: 0x%llx 2^%d Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);	
+	printf("GPUEngine: Fixed DPmodule: 0x%lx 2^%d Hop_modulo: %d Power: %d \n", (unsigned long)DPmodule, pow2dp, hop_modulo, power);	
   } else {
-	printf("GPUEngine: DPmodule: 0x%llx 2^%d (pow2W/2)-log(Kangaroos)-2 Hop_modulo: %d Power: %d \n", DPmodule, pow2dp, hop_modulo, power);
+	printf("GPUEngine: DPmodule: 0x%lx 2^%d (pow2W/2)-log(Kangaroos)-2 Hop_modulo: %d Power: %d \n", (unsigned long)DPmodule, pow2dp, hop_modulo, power);
   }
   
   // Get mask hop_modulo
   hop_modulo = hop_modulo - 1;
   
-  this->DPmodule = DPmodule - 1;//this->DPmodule = DPmodule;
+  //this->DPmodule = DPmodule;
+  this->DPmodule = DPmodule - 1;
   this->hop_modulo = hop_modulo;
   
   int deviceCount = 0;
@@ -304,12 +305,12 @@ bool GPUEngine::GetGridSize(int gpuId,int *x,int *y) {
     cudaDeviceProp deviceProp;
     cudaGetDeviceProperties(&deviceProp,gpuId);
 
-    if(*x <= 0) *x = 2 * deviceProp.multiProcessorCount;
-    if(*y <= 0) *y = 2 * _ConvertSMVer2Cores(deviceProp.major,deviceProp.minor);
-	//if(*x <= 0) *x = deviceProp.multiProcessorCount;
-    //if(*y <= 0) *y = _ConvertSMVer2Cores(deviceProp.major,deviceProp.minor);
+    //if(*x <= 0) *x = 2 * deviceProp.multiProcessorCount;
+    //if(*y <= 0) *y = 2 * _ConvertSMVer2Cores(deviceProp.major,deviceProp.minor);
+	if(*x <= 0) *x = deviceProp.multiProcessorCount;
+    if(*y <= 0) *y = _ConvertSMVer2Cores(deviceProp.major,deviceProp.minor);
     if(*y <= 0) *y = 128;
-
+	
   }
 
   return true;
@@ -392,7 +393,7 @@ bool GPUEngine::callKernel() {
   cudaMemset(outputPrefix,0,4);
   
   // Call the kernel 
-  comp_keys << < nbThread / nbThreadPerGroup, nbThreadPerGroup >> >
+  comp_keys << < (nbThread / nbThreadPerGroup), nbThreadPerGroup >> >
 		(inputKangaroo, DPmodule, hop_modulo, maxFound, outputPrefix);
   
   cudaError_t err = cudaGetLastError();
