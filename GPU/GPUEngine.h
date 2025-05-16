@@ -28,7 +28,7 @@
 
 #define NB_WORK 16//5// Set 1 - 5 Number work files
 
-#define HT_SIZE 1024// 128
+#define HT_SIZE 16384// 1024// 128
 
 #define USE_ORIGINAL_JUMP
 
