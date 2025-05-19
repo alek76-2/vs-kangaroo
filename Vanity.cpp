@@ -1888,7 +1888,7 @@ void VanitySearch::FindKeyGPU(TH_PARAM *ph) {
 			
 			// Check Output Data GPU and Compute Tame keys
 			
-			if (n_count % 1000 == 0) { // add if !!!
+			if ((n_count & 1023) == 0) { // add if !!!
 			if (kType == 1 && GPU_OUTPUT_CHECK == 1) {
 				
 				Int chk(&Tkey);
@@ -1981,7 +1981,7 @@ void VanitySearch::FindKeyGPU(TH_PARAM *ph) {
 	}// end Save work
 	
 	// Check time interval for save work
-	if (n_count % 1000 == 0) {
+	if ((n_count & 1023) == 0) {
 		if (useWorkFile || createWorkFile) {
 			save_work_timer = (uint32_t)time(NULL);
 			uint32_t time_diff = save_work_timer - save_work_timer_interval;
